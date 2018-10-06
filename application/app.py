@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 ################
 # Preparations #
 ################
@@ -8,25 +6,15 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State, Event
+from dash.dependencies import Input, Output, State
 import pickle
 import os
-
-# Plotting
-import plotly.plotly as py
 import plotly.figure_factory as ff
-import plotly.graph_objs as go
-
-# Data pre-processing
 import numpy as np
 import pandas as pd
 import googlemaps
 import geopandas as geo
 from shapely.geometry import Point
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
 
 # Define app
 app = dash.Dash(__name__)
@@ -168,7 +156,7 @@ def update_output(n_clicks, address):
     Output(component_id='slider-output-container', component_property='children'),
     [Input(component_id='my-slider', component_property='value')]
 )
-def update_output(value):
+def update_output2(value):
     low = value[0]
     high = value[1]
     above = y_test_prob.y_test[(y_test_prob.y_prob > low) & (y_test_prob.y_prob < high)]
