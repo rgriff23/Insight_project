@@ -9,10 +9,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 # Path where files are stored
-basepath = '~/Desktop/Insight Project - HELM DateNight/'
+basepath = ''
 
 # Import data
-data = pd.read_csv(basepath + '09-27-18_parent_census_data.csv')
+data = pd.read_csv(basepath + 'parent_census_data.csv')
 
 #############
 # DATA PREP #

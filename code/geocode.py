@@ -13,10 +13,10 @@ import seaborn as sns
 gmaps = googlemaps.Client(key='')
 
 # Path where files are stored
-basepath = '~/Desktop/Insight Project - HELM DateNight/'
+basepath = ''
 
 # Data: registrations (subset to M, L, K)
-data_parent_reg = pd.read_csv(basepath + 'insight_randi_sept_13_2018_data_initial_parent_registration.csv', encoding='latin1')
+data_parent_reg = pd.read_csv(basepath + 'initial_parent_registration.csv', encoding='latin1')
 data_parent_reg['date_entered'] = pd.to_datetime(data_parent_reg['date_entered'])
 data_parent_reg.set_index('date_entered', inplace=True)
 data_parent_reg = data_parent_reg[['parent_registration_id','postal_code','city']]

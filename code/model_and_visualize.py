@@ -20,11 +20,11 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Path where files are stored
-basepath = 'Desktop/Insight Project - HELM DateNight/'
+basepath = ''
 
 # Import data for model, clean up missing/inf values
 # Log1p transform PopDensity & MedianIncome
-data = pd.read_csv(basepath + '09-27-18_parent_census_data.csv')
+data = pd.read_csv(basepath + 'parent_census_data.csv')
 data.replace([np.inf, -np.inf], 0, inplace=True)
 data.fillna(0, inplace=True)
 data = data.drop(['lat','long','parent_registration_id','Area','Households','Population'], axis=1)
@@ -37,7 +37,7 @@ shp.replace([np.inf, -np.inf], 0, inplace=True)
 shp.fillna(0, inplace=True)
 
 # Import geocoded addresses
-geocodes = pd.read_csv(basepath + '09-23-18-geocodes.csv')
+geocodes = pd.read_csv(basepath + 'geocodes.csv')
 
 ##########################################
 # CREATE PRE-PROCESSING PIPELINE & MODEL #
@@ -114,9 +114,9 @@ conf_test = confusion_matrix(y_test, predictions_test)
 #y_test_prob.to_csv('y_test_prob.csv', index=False)
 
 # Import pickled pipeline
-pickle_path = '/Users/nunnlab/Desktop/Insight_dash_app/logistic_pickle.pkl'
-with open(pickle_path, 'rb') as pipeline:
-    pipeline = pickle.load(pipeline)
+#pickle_path = 'logistic_pickle.pkl'
+#with open(pickle_path, 'rb') as pipeline:
+#    pipeline = pickle.load(pipeline)
 
 #####################################
 # APPLY MODEL TO ALL CENSUS REGIONS #
@@ -222,9 +222,9 @@ plt.tick_params(colors='dimgray')
 
 # Subscription probabilities chloropleth
 plt.style.use('fivethirtyeight')
-shp.plot(column='region_probs')
-plt.ylim((43.6,43.85))
-plt.xlim((-79.7,-79.2))
+shp.plot(column='region_probs', legend=True)
+plt.ylim((43,45.75))
+plt.xlim((-80.5,-75))
 plt.tick_params(colors='dimgray')
 plt.title('Predicted probabilities', color='dimgray')
 
