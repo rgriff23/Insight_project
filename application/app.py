@@ -10,6 +10,7 @@ from dash.dependencies import Input, Output, State
 import pickle
 import os
 import plotly.figure_factory as ff
+import plotly.graph_objs as go
 import numpy as np
 import pandas as pd
 import googlemaps
@@ -97,33 +98,34 @@ distplot_fig = ff.create_distplot(distplot_data, ['Not subscribed','Subscribed']
 
 # Layout
 app.layout = html.Div([
+        
+      html.Div([
+        html.H1('Selecting users for A/B testing'),
+        html.H3('Enter a valid Ontario address:'),
+        html.Div([
+                dcc.Input(id='my-address', value='Toronto', type='text'),
+                html.Button(id='submit-button', type='submit', children='Submit'),
+                html.Div(id='address-output-container')], style={'width':'310px',
+                                                                 'padding-left': '25px'}),
+        ]),
 
      html.Div([
-       html.H1('Selecting users for A/B testing'),
        html.H3('Use slider to change range for inclusion in sample:'),
-        dcc.RangeSlider(id='my-slider',
+        html.Div([dcc.RangeSlider(id='my-slider',
                    min=0,
-                   max=0.45,
+                   max=0.6,
                    step=0.01,
-                   value=[0,0.1],
+                   value=[0.4,0.6],
                    updatemode='drag',
                    pushable=0.01,
                    allowCross=False),
-        html.Div(id='slider-output-container'),
-       
-      html.Div([
-        html.H3('Enter a valid Ontario address:'),
-        dcc.Input(id='my-address', value='Toronto', type='text'),
-        html.Button(id='submit-button', type='submit', children='Submit'),
-        html.Div(id='address-output-container'),
-        ]),
-      
-        dcc.Graph(
-        id='example-graph',
-        figure=distplot_fig),
-       dcc.Markdown("Go to [GitHub](https://github.com/rgriff23/Insight_project)")
-       
-       ])
+                  html.Div(id='slider-output-container')], style={'width':'310px',
+                                                                  'padding-left': '25px'}),
+        dcc.Graph(id='figure',
+                  config={'displayModeBar': False}),
+       dcc.Markdown('Go to [GitHub](https://github.com/rgriff23/Insight_project)')
+    ])       
+
    ], style = {'width': '500px',
                'padding-left': '80px'})
 
@@ -165,6 +167,31 @@ def update_output2(value):
     x = 'You selected a range from {} to {}.'.format(low, high)
     y = 'Per 100 users, ~{} will be included in the sample. The baseline subscription probability of this group is {}%.'.format(expected_discounts, expected_proportion)
     return x + ' ' + y
+
+# Change figure with slider
+@app.callback(
+    Output(component_id='figure', component_property='figure'),
+    [Input(component_id='my-slider', component_property='value')]
+)
+def update_figure(value):
+    low = value[0]
+    high = value[1]
+    data = distplot_fig.data
+    layout = distplot_fig.layout 
+    layout['margin'] = dict(t=20, l=20)
+    shapes = [{'type': 'rect',
+                   'xref': 'x',
+                   'yref': 'y',
+                   'x0': low,
+                   'y0': 0,
+                   'x1': high,
+                   'y1': 6.25,
+                   'fillcolor': '#d3d3d3',
+                   'opacity': 0.5,
+                   'line':{'width': 0}}]
+    layout['shapes'] = shapes
+    fig = go.Figure(data=data, layout=layout)
+    return fig
 
 #######
 # End #
