@@ -100,7 +100,7 @@ distplot_fig = ff.create_distplot(distplot_data, ['Not subscribed','Subscribed']
 app.layout = html.Div([
         
       html.Div([
-        html.H1('Selecting users for A/B testing'),
+        html.H1('Selecting users for experiments'),
         html.H3('Enter a valid Ontario address:'),
         html.Div([
                 dcc.Input(id='my-address', value='Toronto', type='text'),
